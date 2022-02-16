@@ -8,12 +8,18 @@ echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg arch=amd64] ht
 apt-get update
 apt install salt-master salt-minion -y
 
-echo "auto_accept: True" >> /etc/salt/master
+echo "auto_accept: True" > /etc/salt/master
 systemctl restart salt-master
 
-echo "master: salt-master" >> /etc/salt/minion
+echo "master: salt-master" > /etc/salt/minion
 cat << EOF > /etc/salt/grains
 roles:
   - salt
 EOF
 systemctl restart salt-minion
+
+# create ln from / to home dir, due to vagrant can not support login via root.
+rm -rf /srv
+mkdir -p /home/vagrant/srv
+chown vagrant:vagrant /home/vagrant/srv
+ln -s /home/vagrant/srv /srv
