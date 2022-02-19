@@ -10,6 +10,7 @@ collect: init
 	@echo "${NO_COLOR}collect salt config files to ./dist"
 	@mkdir -p ./dist
 	@rsync -a ./pillar ./dist --delete
+	@rsync -a ./salt ./dist --delete
 	@vagrant ssh salt-master -c "rm -rf ~/srv/*"
-	@vagrant scp ./dist/* salt-master:~/srv/ > /dev/null
+	@for salt_dir in $$(ls ./dist); do vagrant scp ./dist/$${salt_dir} salt-master:~/srv/ > /dev/null; done
 	@echo "${NO_COLOR}Collect done in ./dist"
