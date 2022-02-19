@@ -1,4 +1,4 @@
-base:
+int:
   '*':
     - node-exporter
   'roles:prometheus':
