@@ -8,7 +8,11 @@ echo "deb [signed-by=/usr/share/keyrings/salt-archive-keyring.gpg arch=amd64] ht
 apt-get update
 apt install salt-minion -y
 
-echo "master: salt-master" > /etc/salt/minion
+cat << EOF > /etc/salt/minion
+master: salt-master
+saltenv: int
+EOF
+
 cat << EOF > /etc/salt/grains
 roles:
   - prometheus

@@ -9,9 +9,26 @@ apt-get update
 apt install salt-master salt-minion -y
 
 echo "auto_accept: True" > /etc/salt/master
+cat << EOF > /etc/salt/master
+auto_accept: True
+pillar_roots:
+  base:
+    - /srv/pillar
+  int:
+    - /srv/pillar/int
+file_roots:
+  base:
+    - /srv/salt
+  int:
+    - /srv/salt/int
+EOF
 systemctl restart salt-master
 
-echo "master: salt-master" > /etc/salt/minion
+cat << EOF > /etc/salt/minion
+master: salt-master
+saltenv: int
+EOF
+
 cat << EOF > /etc/salt/grains
 roles:
   - salt
